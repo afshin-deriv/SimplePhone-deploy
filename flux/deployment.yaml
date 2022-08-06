@@ -22,6 +22,24 @@ spec:
       - name: simplephone
         image: k8s.gcr.io/hpa-example
         imagePullPolicy: IfNotPresent
+        env:
+        - name: DB_USER
+          value: "admin"
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: simplephone
+              key: password
+        - name: DB_HOSTNAME
+          valueFrom:
+            secretKeyRef:
+              name: simplephone
+              key: db_endpoint
+        - name: API_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: simplephone
+              key: api_secret_key
         ports:
         - containerPort: 80
         resources:
