@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: simplephone
-        image: k8s.gcr.io/hpa-example
+        image: phantasm/simplephone
         imagePullPolicy: IfNotPresent
         env:
         - name: DB_USER
