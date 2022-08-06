@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: production
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simplephone
+  namespace: production
+spec:
+  selector:
+    matchLabels:
+      run: simplephone
+  template:
+    metadata:
+      labels:
+        run: simplephone
+    spec:
+      containers:
+      - name: simplephone
+        image: k8s.gcr.io/hpa-example
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
