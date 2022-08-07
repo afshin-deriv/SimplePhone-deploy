@@ -6,9 +6,13 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m0s
-  path: ./flux
+  path: ./eks-prod
   prune: true
   sourceRef:
     kind: GitRepository
     name: simplephone
+  healthChecks:
+    - kind: Deployment
+      name: simplephone
+      namespace: production
 

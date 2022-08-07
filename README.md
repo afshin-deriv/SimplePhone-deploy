@@ -1,9 +1,6 @@
 # SimplePhone-deploy
 
 ## Setup CD (flux bootstrap)
-Flux keeps Kubernetes clusters in sync with configuration kept under source control like Git repositories, and automates updates to that configuration when there is new code to deploy. It is built using Kubernetes' API extension server, and can integrate with Prometheus and other core components of the Kubernetes ecosystem. Flux supports multi-tenancy and syncs an arbitrary number of Git repositories.
-
-In this section, we’ll set up Flux to synchronize changes in the SimplePhone-Infra repository. This example is a very simple pipeline that demonstrates how to sync one application repo to a single cluster, but as mentioned, Flux is capable of a lot more than that.
 
 1. Install flux CD:
 
@@ -28,10 +25,8 @@ Flux supports synchronizing manifests in a single directory, but when you have a
 ```
 images:
 - name: simplephone
-  newName:simplephone
   newTag: new
 ```
-As mentioned above, the Github Actions script updates the image tag in this file after the image is built and pushed, indicating to Flux that a new image is available in Docker Hub.
 
 2. Bootstrap the Flux Config Repository:
 
@@ -55,7 +50,7 @@ flux create secret git simplephone-flux-secret \
     --url=ssh://git@github.com/${GITHUB_USER}/${GITHUB_REPO}
 ```
 
-4. Add Deploy key
+4. Add Deploy key to Github ():
 ```
 kubectl get secret simplephone-flux-secret -n flux-system -ojson \
     | jq -r '.data."identity.pub"' | base64 -d
@@ -81,7 +76,7 @@ cat ./clusters/cluster1/simplephone-flux-source.yaml
 ```
 flux create kustomization simplephone \
   --source=simplephone \
-  --path=./flux \
+  --path=./eks-prod \
   --prune=true \
   --interval=1m \
   --export > ./clusters/cluster1/simplephone-kustomization.yaml
