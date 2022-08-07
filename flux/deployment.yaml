@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: simplephone
-        image: phantasm/simplephone
+        image: phantasm/simplephone:V20220802_0_01
         imagePullPolicy: IfNotPresent
         env:
         - name: DB_USER
