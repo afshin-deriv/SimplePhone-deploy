@@ -85,9 +85,8 @@ git add ./clusters/cluster1/simplephone-flux-source.yaml ./clusters/cluster1/sim
 git commit -m "add simplephone source"
 git push origin main
 
-flux reconcile source git simplephone
-
 # verify
+flux reconcile source git simplephone
 watch kubectl get -n flux-system gitrepositories
 
 ```
