@@ -20,16 +20,7 @@ If successful, it returns something similar to this:
 ✔ prerequisites checks passed
 ```
 
-Flux supports synchronizing manifests in a single directory, but when you have a lot of YAML it is more efficient to use Kustomize to manage them. For the SimplePhone example, all of the manifests were copied into a deploy directory and a kustomization file was added.  For this example, the kustomization file contains a `newTag` directive for the simplephone images section:
-
-```
-images:
-- name: simplephone
-  newTag: new
-```
-
-2. Bootstrap the Flux Config Repository:
-
+3. Bootstrap the Flux Config Repository:
 ```
 export GITHUB_TOKEN=<personal_access_token>
 export GITHUB_USER=<github_username>
@@ -44,19 +35,19 @@ flux bootstrap github \
     --token-auth
 ```
 
-3. Create a secret
+4. Create a flux secret
 ```
 flux create secret git simplephone-flux-secret \
     --url=ssh://git@github.com/${GITHUB_USER}/${GITHUB_REPO}
 ```
 
-4. Add Deploy key to Github repo:
+4. Add Deploy key into Github repo(Settings -> Deploy Keys):
 ```
 kubectl get secret simplephone-flux-secret -n flux-system -ojson \
     | jq -r '.data."identity.pub"' | base64 -d
 ```
 
-5. Create a source
+5. Create a flux source:
 ```
 git clone git@github.com:afshinpaydar-binary/SimplePhone-deploy.git
 cd SimplePhone-deploy
@@ -72,6 +63,7 @@ flux get source git
 cat ./clusters/cluster1/simplephone-flux-source.yaml
 ```
 
+6. Create flux kustomization and push changes into deployment repo(GitOps):
 ```
 flux create kustomization simplephone \
   --source=simplephone \
@@ -89,7 +81,7 @@ flux reconcile source git simplephone
 watch kubectl get -n flux-system gitrepositories
 ```
 
-6. Watch the Kustomization
+7. Watch the Kustomization
 ```
 watch flux get kustomizations
 ```
