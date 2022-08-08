@@ -22,6 +22,10 @@ spec:
       - name: simplephone
         image: phantasm/simplephone:91db63f1b2b561f4ad26563aa7754ac41b473c9a
         imagePullPolicy: IfNotPresent
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
         env:
         - name: DB_USER
           value: "admin"
