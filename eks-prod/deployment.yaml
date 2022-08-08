@@ -19,13 +19,31 @@ spec:
         run: simplephone
     spec:
       containers:
+      - name: nginx
+        image: phantasm/nginx-sidecar:66b45f681c6c7c0d9136c29214893e535f43a77e
+        imagePullPolicy: IfNotPresent
+        # livenessProbe:
+        #   httpGet:
+        #     path: /static/css/bootstrap.min.css
+        #     port: 80
+        name: nginx
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
       - name: simplephone
-        image: phantasm/simplephone:8b3bc2adb62dee5c3ef554238d363d9cabef8b0c
+        image: phantasm/simplephone:66b45f681c6c7c0d9136c29214893e535f43a77e
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
             path: /
-            port: 80
+            port: 5000
         env:
         - name: DB_USER
           value: "admin"
@@ -45,7 +63,7 @@ spec:
               name: simplephone
               key: api_secret_key
         ports:
-        - containerPort: 80
+        - containerPort: 5000
         resources:
           limits:
             cpu: 200m
