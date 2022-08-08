@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: simplephone
-        image: phantasm/simplephone:91db63f1b2b561f4ad26563aa7754ac41b473c9a
+        image: phantasm/simplephone:f3581d4efa99ae48988cfe5840121151f719ec63
         imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
