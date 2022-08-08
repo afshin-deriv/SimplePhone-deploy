@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: phantasm/nginx-sidecar:f9baea976f85e6164cf267f267b49d01dc38a4c0
+        image: phantasm/nginx-sidecar:5c4974da37d1e1eef760826d8c07a913e74bd295
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -37,7 +37,7 @@ spec:
             cpu: 200m
             memory: 256Mi
       - name: simplephone
-        image: phantasm/simplephone:f9baea976f85e6164cf267f267b49d01dc38a4c0
+        image: phantasm/simplephone:5c4974da37d1e1eef760826d8c07a913e74bd295
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
