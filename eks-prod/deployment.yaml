@@ -26,7 +26,6 @@ spec:
         #   httpGet:
         #     path: /static/css/bootstrap.min.css
         #     port: 80
-        name: nginx
         ports:
         - containerPort: 80
           protocol: TCP
