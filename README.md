@@ -1,13 +1,34 @@
 # SimplePhone-deploy
 
-## Setup CD (flux bootstrap)
+1. Install [flux CD](https://toolkit.fluxcd.io/get-started/#install-the-flux-cli)
+2. Install [kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)
+3. Install [helm](https://helm.sh/docs/intro/install/)
 
-1. Install flux CD:
+## Development setup
 
-MacOS:
-`brew install fluxcd/tap/flux`
+```sh
+cd kind
+kind create cluster --config kind.yaml --name dev
+kind export kubeconfig --name dev
+kubectl config use-context kind-dev
+make dev
 
-For other installation options, see [Installing the Flux CLI](https://toolkit.fluxcd.io/get-started/#install-the-flux-cli).
+# Access to application by port forwarding
+kubectl port-forward `kubectl get pod -l run=simplephone --no-headers -o custom-columns=":metadata.name"` 8080:80
+# Browse http://127.0.0.1:8080/
+```
+
+### Clean Up
+```sh
+make clean
+```
+
+## Production setup
+
+1. Connect to production k8s
+```sh
+kubectl config set-context <K8S Cluster Context>
+```
 
 2. Once installed, check that your EKS/k8s cluster satisfies the prerequisites:
 
