@@ -62,13 +62,13 @@ flux create secret git simplephone-flux-secret \
     --url=ssh://git@github.com/${GITHUB_USER}/${GITHUB_REPO}
 ```
 
-4. Add Deploy key into Github repo(Settings -> Deploy Keys):
+5. Add below `Deploy key` into Github repo(Settings -> Deploy Keys):
 ```
 kubectl get secret simplephone-flux-secret -n flux-system -ojson \
     | jq -r '.data."identity.pub"' | base64 -d
 ```
 
-5. Create a flux source:
+6. Create a flux source:
 ```
 git clone git@github.com:afshinpaydar-binary/SimplePhone-deploy.git
 cd SimplePhone-deploy
@@ -84,7 +84,7 @@ flux get source git
 cat ./clusters/cluster1/simplephone-flux-source.yaml
 ```
 
-6. Create flux kustomization and push changes into deployment repo(GitOps):
+7. Create flux kustomization and push changes into deployment repo(GitOps):
 ```
 flux create kustomization simplephone \
   --source=simplephone \
@@ -102,7 +102,7 @@ flux reconcile source git simplephone
 watch kubectl get -n flux-system gitrepositories
 ```
 
-7. Watch the Kustomization
+8. Watch the Kustomization
 ```
 watch flux get kustomizations
 ```
