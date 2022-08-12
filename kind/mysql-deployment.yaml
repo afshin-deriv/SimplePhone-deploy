@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: production
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:5.7
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: simplephone
+              key: password
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+        - name: mysql-initdb
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc
+      - name: mysql-initdb
+        configMap:
+          name: mysql-initdb
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-initdb
+  namespace: production
+data:
+  init.sql: |
+    CREATE DATABASE IF NOT EXISTS flask_app;
+    use flask_app;
+    CREATE TABLE IF NOT EXISTS phonebook (
+      id int(5) NOT NULL AUTO_INCREMENT,
+      name varchar(255) NOT NULL,
+      phone varchar(50) NOT NULL,
+      address varchar(255) NOT NULL,
+      PRIMARY KEY (id)
+    ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+    INSERT INTO phonebook (id, name, phone, address) VALUES
+    (1, 'Afshin Paydar', '06123456', 'Cyberjaya');
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: production
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysql
