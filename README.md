@@ -14,8 +14,8 @@ kubectl config use-context kind-dev
 make dev
 
 # Access to application by port forwarding
-kubectl port-forward `kubectl get pod -l run=simplephone --no-headers -o custom-columns=":metadata.name"` 8080:80
-# Browse http://127.0.0.1:8080/
+kubectl port-forward service/simplephone 9090:80
+# Browse http://127.0.0.1:9090/
 ```
 
 ### Clean Up
