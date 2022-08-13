@@ -22,12 +22,6 @@ local/mysql: ## Create MySql DB in local k8s cluster
 	kubectl apply -f storage.yaml
 	kubectl apply -f mysql-deployment.yaml
 
-local/mysql: ## Create MySql DB in local k8s cluster
-	@echo 'Create MySql Database'
-	kubectl apply -f secret.yaml
-	kubectl apply -f storage.yaml
-	kubectl apply -f mysql-deployment.yaml
-
 local/k8s: ## Applying k8s manifests into local k8s cluster
 	@echo 'Create Application deployment'
 	kubectl config set-context `kubectl config current-context` --namespace production
