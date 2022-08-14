@@ -17,9 +17,12 @@ spec:
       containers:
       - image: mysql:5.7
         name: mysql
-        envFrom:
-          - secretRef:
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
               name: simplephone
+              key: password
         ports:
         - containerPort: 3306
           name: mysql

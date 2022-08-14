@@ -39,9 +39,27 @@ spec:
           httpGet:
             path: /
             port: 80
-        envFrom:
-        - secretRef:
-            name: simplephone
+        env:
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: simplephone
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: simplephone
+              key: password
+        - name: DB_HOSTNAME
+          valueFrom:
+            secretKeyRef:
+              name: simplephone
+              key: db_endpoint
+        - name: API_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: simplephone
+              key: api_secret_key
         resources:
           limits:
             cpu: 200m
