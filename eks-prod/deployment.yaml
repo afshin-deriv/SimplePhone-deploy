@@ -33,33 +33,15 @@ spec:
       - name: simplephone
         image: phantasm/simplephone:68c09c563926a4ff4551e16624c0676cb0d66899
         imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
         livenessProbe:
           httpGet:
             path: /
             port: 80
-        env:
-        - name: DB_USER
-          valueFrom:
-            secretKeyRef:
-              name: simplephone
-              key: username
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: simplephone
-              key: password
-        - name: DB_HOSTNAME
-          valueFrom:
-            secretKeyRef:
-              name: simplephone
-              key: db_endpoint
-        - name: API_SECRET_KEY
-          valueFrom:
-            secretKeyRef:
-              name: simplephone
-              key: api_secret_key
-        ports:
-        - containerPort: 80
+        envFrom:
+        - secretRef:
+            name: simplephone
         resources:
           limits:
             cpu: 200m
